@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{baseUrl}}/posts/1"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "id": 1,
+      "title": "updated title",
+      "body": "updated body",
+      "userId": 1
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", () => pm.response.to.have.status(200));
+      pm.test("Title updated", () => pm.expect(pm.response.json().title).to.eql("updated title"));
+    language: text/javascript
+order: 8000

@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/posts/1"
+method: GET
+headers:
+  Content-Type: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", () => pm.response.to.have.status(200));
+      const j = pm.response.json();
+      pm.test("Has expected fields", () => { pm.expect(j).to.have.all.keys("userId","id","title","body"); pm.expect(j.id).to.eql(1); });
+    language: text/javascript
+order: 2000

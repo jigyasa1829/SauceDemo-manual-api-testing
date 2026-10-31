@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/posts"
+method: GET
+headers:
+  Content-Type: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", () => pm.response.to.have.status(200));
+      pm.test("Response time < 2000 ms", () => pm.expect(pm.response.responseTime).to.be.below(2000));
+      const j = pm.response.json();
+      pm.test("Returns array of 100 posts", () => { pm.expect(j).to.be.an("array"); pm.expect(j.length).to.eql(100); });
+    language: text/javascript
+order: 1000

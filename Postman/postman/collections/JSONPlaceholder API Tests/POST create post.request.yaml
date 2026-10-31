@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{baseUrl}}/posts"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "title": "QA test post",
+      "body": "created via Postman",
+      "userId": 1
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201", () => pm.response.to.have.status(201));
+      const j = pm.response.json();
+      pm.test("Echoes request data and returns id", () => { pm.expect(j.title).to.eql("QA test post"); pm.expect(j.id).to.exist; });
+    language: text/javascript
+order: 7000

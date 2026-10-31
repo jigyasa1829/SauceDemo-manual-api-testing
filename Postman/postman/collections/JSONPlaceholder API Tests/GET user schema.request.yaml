@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/users/1"
+method: GET
+headers:
+  Content-Type: application/json
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", () => pm.response.to.have.status(200));
+      const u = pm.response.json();
+      pm.test("User schema", () => { pm.expect(u.name).to.be.a("string"); pm.expect(u.email).to.include("@"); pm.expect(u.address).to.be.an("object"); });
+    language: text/javascript
+order: 5000
